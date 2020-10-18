@@ -1,4 +1,11 @@
-#test
-1+1
-#ooo
-#aaa
+import tuiles
+
+setScreenMode(300,200)
+
+def afficherImage (x,y, colormap, image):
+    for i in range(0,len(image)):
+        for j in range(0,len(image[i])):
+            setPixel(x+j,y+i,colormap[image[i][j]])
+                      
+        
+afficherImage(20,20,tuiles.colormap,tuiles.images[3])
