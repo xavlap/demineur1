@@ -15,10 +15,13 @@ def afficherImage (x,y, colormap, image):
 def afficherTuile(x,y, tuile):
     afficherImage(16*x,16*y, tuiles.colormap,tuiles.images[tuile])
 
-
-    
-    
-
-
-    
-
+def attendreClic():
+    while True:
+        clic = getMouseButton()
+        if clic == 1 and getMouseCtrl() ==False :
+            return struct(X=getMouseX()//16,
+                          Y=getMouseY()//16,drapeau = False)
+        elif clic == 2 or clic == 1 and getMouseCtrl()==true:
+            return struc(X=getMouseX()//16,
+                         Y=getMouseY()//16,drapeau = true)          
+        sleep(0.01)
