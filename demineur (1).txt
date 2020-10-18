@@ -1,11 +1,24 @@
 import tuiles
 
-setScreenMode(300,200)
+setScreenMode(64,64)
 
+#pour chaque pixel dans chque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
-    for i in range(0,len(image)):
-        for j in range(0,len(image[i])):
+    for i in range(0,len(image)):    
+        for j in range(0,len(image[i])):    
             setPixel(x+j,y+i,colormap[image[i][j]])
-                      
-        
-afficherImage(20,20,tuiles.colormap,tuiles.images[3])
+            
+#afficherImage(0,0, tuiles.colormap, tuiles.images[0])
+
+#puique les tuiles sont 16x16, la coordonné de pixel
+#corespond a 16x la coordonne de tuile
+def afficherTuile(x,y, tuile):
+    afficherImage(16*x,16*y, tuiles.colormap,tuiles.images[tuile])
+
+
+    
+    
+
+
+    
+
