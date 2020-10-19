@@ -15,9 +15,13 @@ def afficherImage (x,y, colormap, image):
 def afficherTuile(x,y, tuile):
     afficherImage(16*x,16*y, tuiles.colormap,tuiles.images[tuile])
 
+#attendre que l'utilisateur clic a un endroit
+#je crois qu'il manque qqch pour attendre que le clic soit "arreter"
 def attendreClic():
     while True:
         clic = getMouseButton()
+        #on divise entièrement le x et le y car les images des tuiles
+        #sont 16x16. Comme dans afficherTuiles()
         if clic == 1 and getMouseCtrl() ==False :
             return struct(X=getMouseX()//16,
                           Y=getMouseY()//16,drapeau = False)
@@ -25,3 +29,39 @@ def attendreClic():
             return struc(X=getMouseX()//16,
                          Y=getMouseY()//16,drapeau = true)          
         sleep(0.01)
+
+#retourne un tableau 2D de bool false
+def grilleDeBooleens(largeur, hauteur):
+    matrice= [None] * hauteur
+    for i in range(hauteur):
+        matrice[i] = [False] * largeur
+    return matrice
+
+#retourne un valeur au hasard en zero en max
+def valeurAuHasard(max):
+    return math.floor(random() * max)
+
+
+#on place les nbMines dans un tableau de bool qu'on retourne
+def placerMines(largeur, hauteur, nbMines, x, y): 
+    mines = grilleDeBooleens(largeur, hauteur)#on créer notre grille
+    
+    #on pose nbMines position dans la grille a true
+    for i in range(nbMines):
+        minePlacer = False # la mine n'est pas encore placer
+        
+        #tant qu'on ne trouve pas une bonne place pour
+        #la mine on lui trouve une nouvelle place
+        while not minePlacer:
+            ligne= valeurAuHasard(hauteur)
+            colonne = valeurAuHasard(largeur)
+            
+            #on s'assure de ne pas placer deux mines a la meme place
+            #et de ne pas placer de mine a la coordonnee (x,y)
+            if mines[ligne][colonne]==True or ligne == y and colonne ==x:
+                continue
+            else:
+                mines[ligne][colonne]=True
+                minePlacer = True #la mine a bien ete placer
+            
+    return mines  
