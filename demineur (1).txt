@@ -65,3 +65,26 @@ def placerMines(largeur, hauteur, nbMines, x, y):
                 minePlacer = True #la mine a bien ete placer
             
     return mines  
+
+#regarde chaque case adjacente a la coordonee (x,y)
+#s'il y a une mine on ajoute 1 au cpt
+#surement facons d'ameliorer le code...mais je ne vois pas 
+def nbMinesVoisines(x,y,mines):
+    cpt=0
+    if mines[x-1][y-1]:
+        cpt+=1
+    if mines[x][y-1]:
+        cpt+=1
+    if mines[x+1][y-1]:
+        cpt+=1
+    if mines[x-1][y]:
+        cpt+=1
+    if mines[x-1][y+1]:
+        cpt+=1
+    if mines[x][y]:
+        cpt+=1
+    if mines[x][y-1]:
+        cpt+=1
+    if mines[x+1][y+1]:
+        cpt+=1
+    return cpt
