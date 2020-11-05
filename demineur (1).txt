@@ -1,19 +1,19 @@
 import tuiles
 
-setScreenMode(64,64)
+setScreenMode(130,130)
 
 #pour chaque pixel dans chque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
     for i in range(0,len(image)):    
-        for j in range(0,len(image[i])):    
+        for j in range(0,len(image[i])):
             setPixel(x+j,y+i,colormap[image[i][j]])
             
 #afficherImage(0,0, tuiles.colormap, tuiles.images[0])
 
 #puique les tuiles sont 16x16, la coordonné de pixel
 #corespond a 16x la coordonne de tuile
-def afficherTuile(x,y, tuile):
-    afficherImage(16*x,16*y, tuiles.colormap,tuiles.images[tuile])
+def afficherTuile (x,y, tuile):
+    afficherImage(x*16,y*16, tuiles.colormap,tuiles.images[tuile])
 
 #attendre que l'utilisateur clic a un endroit
 #je crois qu'il manque qqch pour attendre que le clic soit "arreter"
@@ -26,8 +26,8 @@ def attendreClic():
             return struct(X=getMouseX()//16,
                           Y=getMouseY()//16,drapeau = False)
         elif clic == 2 or clic == 1 and getMouseCtrl()==true:
-            return struc(X=getMouseX()//16,
-                         Y=getMouseY()//16,drapeau = true)          
+            return struct(X=getMouseX()//16,
+                         Y=getMouseY()//16,drapeau = True)          
         sleep(0.01)
 
 #retourne un tableau 2D de bool false
@@ -69,6 +69,7 @@ def placerMines(largeur, hauteur, nbMines, x, y):
 #regarde chaque case adjacente a la coordonee (x,y)
 #s'il y a une mine on ajoute 1 au cpt
 #surement facons d'ameliorer le code...mais je ne vois pas 
+#Erreur a fixe; les cotes comme en bas son out of bounds
 def nbMinesVoisines(x,y,mines):
     cpt=0
     if mines[x-1][y-1]:
@@ -88,3 +89,48 @@ def nbMinesVoisines(x,y,mines):
     if mines[x+1][y+1]:
         cpt+=1
     return cpt
+
+#affiche les mines trouve
+def afficherMines(mines):
+    for i in range(len(mines)):
+        for j in range(len(mines[i])):
+            if mines[i][j]:
+                afficherTuile(i,j,9)
+
+def demineur(largeur, hauteur, nbMines):
+    gameOver = False
+    drapeaux = grilleDeBooleens(largeur, hauteur)
+    for i in range(hauteur):
+        for j in range(largeur):
+            afficherTuile(i, j, 12)
+            
+    mines = placerMines(largeur, hauteur, nbMines, 0,0)
+    
+    while not gameOver:
+        clic = attendreClic()
+        x = clic.X
+        y = clic.Y
+        clicDrapeau = clic.drapeau
+        if not clicDrapeau:
+            if mines[x][y]:
+                afficherMines(mines)
+                afficherTuile(x,y,10)
+                print("gameOver") #si click sur mine
+                gameOver = True
+            else: #affichage mine voisine
+                afficherTuile(x,y,nbMinesVoisines(x, y, mines))
+                if nbMinesVoisines(x, y, mines) == 0:
+                    for i in range(x-1, x+1):
+                        for j in range(y-1, y+1):
+                            if(nbMinesVoisines(i, j, mines)):
+                                afficherTuile(i,j,0)
+                    
+                
+        else: #affichage de drapeau, jsp pourquoi sa doubleclick
+            print("in drap")
+            drapeaux[x][y] = not drapeaux[x][y]
+            print(drapeaux[x][y])
+            if(drapeaux[x][y]):
+                afficherTuile(x,y,13)
+            else:
+                afficherTuile(x,y,12)
