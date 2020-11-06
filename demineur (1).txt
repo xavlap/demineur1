@@ -7,8 +7,6 @@ def afficherImage (x,y, colormap, image):
     for i in range(0,len(image)):    
         for j in range(0,len(image[i])):
             setPixel(x+j,y+i,colormap[image[i][j]])
-            
-#afficherImage(0,0, tuiles.colormap, tuiles.images[0])
 
 #puique les tuiles sont 16x16, la coordonné de pixel
 #corespond a 16x la coordonne de tuile
@@ -18,17 +16,23 @@ def afficherTuile (x,y, tuile):
 #attendre que l'utilisateur clic a un endroit
 #je crois qu'il manque qqch pour attendre que le clic soit "arreter"
 def attendreClic():
+    
+    
     while True:
-        clic = getMouseButton()
-        #on divise entièrement le x et le y car les images des tuiles
-        #sont 16x16. Comme dans afficherTuiles()
-        if clic == 1 and getMouseCtrl() ==False :
-            return struct(X=getMouseX()//16,
-                          Y=getMouseY()//16,drapeau = False)
-        elif clic == 2 or clic == 1 and getMouseCtrl()==true:
-            return struct(X=getMouseX()//16,
-                         Y=getMouseY()//16,drapeau = True)          
-        sleep(0.01)
+        if getMouseButton() == 0:
+            sleep(0.01)
+            clic = getMouseButton()
+            X=getMouseX()
+            Y=getMouseY()
+            CTRL = getMouseCtrl()
+            
+            #on divise entièrement le x et le y car les images des tuiles
+            #sont 16x16. Comme dans afficherTuiles()
+            if clic == 1 and CTRL ==False :
+                return struct(X=X//16,Y=Y//16,drapeau = False)       
+            elif clic == 2 or clic == 1 and CTRL==true:
+                return struct(X=X//16,Y=Y//16,drapeau = True)
+        
 
 #retourne un tableau 2D de bool false
 def grilleDeBooleens(largeur, hauteur):
@@ -58,7 +62,7 @@ def placerMines(largeur, hauteur, nbMines, x, y):
             
             #on s'assure de ne pas placer deux mines a la meme place
             #et de ne pas placer de mine a la coordonnee (x,y)
-            if mines[ligne][colonne]==True or ligne == y and colonne ==x:
+            if  ligne == y and colonne ==x or mines[ligne][colonne]==True:
                 continue
             else:
                 mines[ligne][colonne]=True
@@ -69,25 +73,63 @@ def placerMines(largeur, hauteur, nbMines, x, y):
 #regarde chaque case adjacente a la coordonee (x,y)
 #s'il y a une mine on ajoute 1 au cpt
 #surement facons d'ameliorer le code...mais je ne vois pas 
-#Erreur a fixe; les cotes comme en bas son out of bounds
+#Erreur a fixe; les cotes comme en bas sont out of bounds
+#pour fixe: verifier si c'est out bounds avant de regarder pour une mine
 def nbMinesVoisines(x,y,mines):
+    largeur=len(mines[0])#x
+    hauteur=len(mines)#y
+    
     cpt=0
-    if mines[x-1][y-1]:
-        cpt+=1
-    if mines[x][y-1]:
-        cpt+=1
-    if mines[x+1][y-1]:
-        cpt+=1
-    if mines[x-1][y]:
-        cpt+=1
-    if mines[x-1][y+1]:
-        cpt+=1
-    if mines[x][y]:
-        cpt+=1
-    if mines[x][y-1]:
-        cpt+=1
-    if mines[x+1][y+1]:
-        cpt+=1
+    if x == largeur:#si on est en droite
+        if mines[x-1][y]:
+            cpt+=1
+        if y == hauteur: #coin en bas a droite
+            if mines[x-1][y-1]:
+                cpt+=1
+            if mines[x][y-1]:
+                cpt+=1
+        elif y == 0:#coin en haut a droite
+            if mines[x-1][y+1]:
+                cpt+=1
+            if mines[x][y+1]:
+                cpt+=1
+        else:#pas un coin a doite
+            if mines[x-1][y-1]:
+                cpt+=1
+            if mines[x-1][y+1]:
+                cpt+=1
+            if mines[x][y-1]:
+                cpt+=1
+            if mines[x][y+1]:
+                cpt+=1:
+    elif x == 0:#si on est a gauche
+        if mines[x+1][y]:
+            cpt+=1
+        if y == hauteur:#coin en bas a gauche
+            if mines[x+1][y-1]:
+                cpt+=1
+            if mines[x][y-1]:
+                cpt+=1
+        elif y == 0: #coin en haut a gauche
+            if mines[x][y+1]:
+                cpt+=1
+            if mines[x+1][y+1]:
+                cpt+=1
+        else:#pas un coin a gauche
+            if mines[x+1][y-1]:
+                cpt+=1
+            if mines[x+1][y+1]:
+                cpt+=1
+            if mines[x][y-1]:
+                cpt+=1
+            if mines[x][y+1]:
+                cpt+=1:
+            
+    
+        
+    
+    
+     
     return cpt
 
 #affiche les mines trouve
@@ -104,7 +146,10 @@ def demineur(largeur, hauteur, nbMines):
         for j in range(largeur):
             afficherTuile(i, j, 12)
             
-    mines = placerMines(largeur, hauteur, nbMines, 0,0)
+    premierClic = attendreClic()
+    mines = placerMines(largeur, hauteur, nbMines, premierClic.X,premierClic.Y)
+    afficherTuile(premierClic.X,premierClic.Y,
+                  nbMinesVoisines(premierClic.X, premierClic.Y, mines))
     
     while not gameOver:
         clic = attendreClic()
@@ -119,17 +164,17 @@ def demineur(largeur, hauteur, nbMines):
                 gameOver = True
             else: #affichage mine voisine
                 afficherTuile(x,y,nbMinesVoisines(x, y, mines))
-                if nbMinesVoisines(x, y, mines) == 0:
-                    for i in range(x-1, x+1):
-                        for j in range(y-1, y+1):
-                            if(nbMinesVoisines(i, j, mines)):
-                                afficherTuile(i,j,0)
+                #if nbMinesVoisines(x, y, mines) == 0:
+                    #for i in range(x-1, x+1):
+                        #for j in range(y-1, y+1):
+                            #if(nbMinesVoisines(i, j, mines)):
+                                #afficherTuile(i,j,0)
                     
-                
-        else: #affichage de drapeau, jsp pourquoi sa doubleclick
-            print("in drap")
+        #ca double clic pcq on attend pas que le clic sois lacher dans 
+        #la fonction attendre clic (c'est regle)     
+        else: 
             drapeaux[x][y] = not drapeaux[x][y]
-            print(drapeaux[x][y])
+           
             if(drapeaux[x][y]):
                 afficherTuile(x,y,13)
             else:
