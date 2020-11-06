@@ -130,7 +130,7 @@ def nbMinesVoisines(x,y,mines):
             cpt+=1
         if mines[y+1][x+1]:
             cpt+=1
-    elif y == 0:#en bas (on  a deja fait les coin)
+    elif y == hauteur:#en bas (on  a deja fait les coin)
         if mines[y-1][x-1]:
             cpt+=1
         if mines[y-1][x]:
