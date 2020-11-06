@@ -1,6 +1,6 @@
 import tuiles
 
-setScreenMode(130,130)
+setScreenMode(128,128)
 
 #pour chaque pixel dans chque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
@@ -76,9 +76,8 @@ def placerMines(largeur, hauteur, nbMines, x, y):
 #Erreur a fixe; les cotes comme en bas sont out of bounds
 #pour fixe: verifier si c'est out bounds avant de regarder pour une mine
 def nbMinesVoisines(x,y,mines):
-    largeur=len(mines[0])#x
-    hauteur=len(mines)#y
-    
+    largeur=len(mines[0])-1#x
+    hauteur=len(mines)-1#y
     cpt=0
     if x == largeur:#si on est en droite
         if mines[x-1][y]:
@@ -101,7 +100,7 @@ def nbMinesVoisines(x,y,mines):
             if mines[x][y-1]:
                 cpt+=1
             if mines[x][y+1]:
-                cpt+=1:
+                cpt+=1
     elif x == 0:#si on est a gauche
         if mines[x+1][y]:
             cpt+=1
@@ -123,13 +122,38 @@ def nbMinesVoisines(x,y,mines):
             if mines[x][y-1]:
                 cpt+=1
             if mines[x][y+1]:
-                cpt+=1:
-            
-    
-        
-    
-    
-     
+                cpt+=1
+    elif y == 0:#en haut (on  a deja fait les coin)
+        if mines[y+1][x-1]:
+            cpt+=1
+        if mines[y+1][x]:
+            cpt+=1
+        if mines[y+1][x+1]:
+            cpt+=1
+    elif y == 0:#en bas (on  a deja fait les coin)
+        if mines[y-1][x-1]:
+            cpt+=1
+        if mines[y-1][x]:
+            cpt+=1
+        if mines[y-1][x+1]:
+            cpt+=1
+    else:# pas sur les cotes
+        if mines[y+1][x-1]:
+            cpt+=1
+        if mines[y+1][x]:
+            cpt+=1
+        if mines[y+1][x+1]:
+            cpt+=1
+        if mines[y-1][x-1]:
+            cpt+=1
+        if mines[y-1][x]:
+            cpt+=1
+        if mines[y-1][x+1]:
+            cpt+=1
+        if mines[y][x+1]:
+            cpt+=1
+        if mines[y][x-1]:
+            cpt+=1
     return cpt
 
 #affiche les mines trouve
@@ -155,6 +179,8 @@ def demineur(largeur, hauteur, nbMines):
         clic = attendreClic()
         x = clic.X
         y = clic.Y
+        print(x)
+        print(y)
         clicDrapeau = clic.drapeau
         if not clicDrapeau:
             if mines[x][y]:
