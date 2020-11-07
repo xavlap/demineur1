@@ -71,18 +71,18 @@ def placerMines(largeur, hauteur, nbMines, x, y):
     return mines  
 
 #regarde chaque case adjacente a la coordonee (x,y)
-#s'il y a une mine on ajoute 1 au cpt
+#s'il y a une mine on ajoute 1 au cpt(compteur)
 #surement facons d'ameliorer le code...mais je ne vois pas 
-#Erreur a fixe; les cotes comme en bas sont out of bounds
-#pour fixe: verifier si c'est out bounds avant de regarder pour une mine
 def nbMinesVoisines(x,y,mines):
     largeur=len(mines[0])-1#x
     hauteur=len(mines)-1#y
     cpt=0
-    if x == largeur:#si on est en droite
+    if x == largeur:#si on est a droite
+        print('droite')
         if mines[x-1][y]:
             cpt+=1
         if y == hauteur: #coin en bas a droite
+            print('bas droite')
             if mines[x-1][y-1]:
                 cpt+=1
             if mines[x][y-1]:
@@ -123,53 +123,67 @@ def nbMinesVoisines(x,y,mines):
                 cpt+=1
             if mines[x][y+1]:
                 cpt+=1
-    elif y == 0:#en haut (on  a deja fait les coin)
-        if mines[y+1][x-1]:
+    elif y == 0:#en haut (on  a deja fait les coins)
+        if mines[x-1][y+1]:
             cpt+=1
-        if mines[y+1][x]:
+        if mines[x][y+1]:
             cpt+=1
-        if mines[y+1][x+1]:
+        if mines[x+1][y+1]:
+            cpt+=1
+        if mines[x-1][y]:
+            cpt+=1
+        if mines[x+1][y]:
             cpt+=1
     elif y == hauteur:#en bas (on  a deja fait les coin)
-        if mines[y-1][x-1]:
+        if mines[x-1][y-1]:
             cpt+=1
-        if mines[y-1][x]:
+        if mines[x][y-1]:
             cpt+=1
-        if mines[y-1][x+1]:
+        if mines[x+1][y-1]:
+            cpt+=1
+        if mines[x-1][y]:
+            cpt+=1
+        if mines[x+1][y]:
             cpt+=1
     else:# pas sur les cotes
-        if mines[y+1][x-1]:
+        if mines[x-1][y+1]:
             cpt+=1
-        if mines[y+1][x]:
+        if mines[x][y+1]:
             cpt+=1
-        if mines[y+1][x+1]:
+        if mines[x+1][y+1]:
             cpt+=1
-        if mines[y-1][x-1]:
+        if mines[x-1][y-1]:
             cpt+=1
-        if mines[y-1][x]:
+        if mines[x][y-1]:
             cpt+=1
-        if mines[y-1][x+1]:
+        if mines[x+1][y-1]:
             cpt+=1
-        if mines[y][x+1]:
+        if mines[x+1][y]:
             cpt+=1
-        if mines[y][x-1]:
+        if mines[x-1][y]:
             cpt+=1
     return cpt
 
-#affiche les mines trouve
-def afficherMines(mines):
+#affiche les mines et les mauvais drapeaux
+def afficherMines(mines,drapeaux):
     for i in range(len(mines)):
         for j in range(len(mines[i])):
-            if mines[i][j]:
+            if drapeaux[i][j] and not mines[i][j]:
+                afficherTuile(i,j,11)
+            elif mines[i][j]:
                 afficherTuile(i,j,9)
 
 def demineur(largeur, hauteur, nbMines):
     gameOver = False
     drapeaux = grilleDeBooleens(largeur, hauteur)
+    
+    #affiche les tuiles vides
     for i in range(hauteur):
         for j in range(largeur):
             afficherTuile(i, j, 12)
             
+    #on place les mines apres le premier clic pour etre sur de ne pas clic 
+    #sur une bombe au premier clic
     premierClic = attendreClic()
     mines = placerMines(largeur, hauteur, nbMines, premierClic.X,premierClic.Y)
     afficherTuile(premierClic.X,premierClic.Y,
@@ -179,29 +193,30 @@ def demineur(largeur, hauteur, nbMines):
         clic = attendreClic()
         x = clic.X
         y = clic.Y
-        print(x)
-        print(y)
         clicDrapeau = clic.drapeau
+        
         if not clicDrapeau:
-            if mines[x][y]:
-                afficherMines(mines)
-                afficherTuile(x,y,10)
-                print("gameOver") #si click sur mine
-                gameOver = True
-            else: #affichage mine voisine
-                afficherTuile(x,y,nbMinesVoisines(x, y, mines))
-                #if nbMinesVoisines(x, y, mines) == 0:
-                    #for i in range(x-1, x+1):
-                        #for j in range(y-1, y+1):
-                            #if(nbMinesVoisines(i, j, mines)):
-                                #afficherTuile(i,j,0)
+            if not drapeaux[x][y]:#s'il y a un drapeau on fait rien
+                if mines[x][y]: #si click sur mine
+                    afficherMines(mines,drapeaux)
+                    afficherTuile(x,y,10)#affiche la mine ou on clic en rouge
+                    print("gameOver")
+                    gameOver = True #on arrete le jeu
                     
-        #ca double clic pcq on attend pas que le clic sois lacher dans 
-        #la fonction attendre clic (c'est regle)     
+                else: #affichage selon nb de mines voisines
+                    afficherTuile(x,y,nbMinesVoisines(x, y, mines))
+                    #if nbMinesVoisines(x, y, mines) == 0:
+                        #for i in range(x-1, x+1):
+                            #for j in range(y-1, y+1):
+                                #if(nbMinesVoisines(i, j, mines)):
+                                    #afficherTuile(i,j,0)
+        
+        #si on veux mettre ou enlever un drapeau
         else: 
-            drapeaux[x][y] = not drapeaux[x][y]
-           
+            drapeaux[x][y] = not drapeaux[x][y]#on change le booleen
+            
+            #on affiche la case qui corespond a se qu'on veut
             if(drapeaux[x][y]):
-                afficherTuile(x,y,13)
+                afficherTuile(x,y,13)#mettre un drapeau
             else:
-                afficherTuile(x,y,12)
+                afficherTuile(x,y,12)#enlever un drapeau
