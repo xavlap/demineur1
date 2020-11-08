@@ -1,6 +1,6 @@
 import tuiles
 
-#pour chaque pixel dans chque ligne on change le pixel
+#pour chaque pixel dans chaque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
     for i in range(0,len(image)):    
         for j in range(0,len(image[i])):
@@ -14,9 +14,9 @@ def afficherTuile (x,y, tuile):
 #attendre que l'utilisateur clic a un endroit
 #je crois qu'il manque qqch pour attendre que le clic soit "arreter"
 def attendreClic():
-    
-    
     while True:
+        #seulement si aucun bouton de la souris n'est utiliser
+        #on peut attendre pour un clic
         if getMouseButton() == 0:
             sleep(0.01)
             clic = getMouseButton()
@@ -232,8 +232,9 @@ def demineur(largeur, hauteur, nbMines):
             gameOver=True
                 
 def testDemineur():
-    setScreenMode(16,16)
     
+    #4 tests de afficherTuile
+    setScreenMode(16,16)
     afficherTuile(0,0,12)
     assert exportScreen() == '#'\
     'fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#fff#ccc\n'\
@@ -252,6 +253,104 @@ def testDemineur():
     '#fff#fff#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#888#888\n'\
     '#fff#ccc#888#888#888#888#888#888#888#888#888#888#888#888#888#888\n'\
     '#ccc#888#888#888#888#888#888#888#888#888#888#888#888#888#888#888'
-   
     
-testDemineur()   
+    setScreenMode(16,16)
+    afficherTuile(0,0,0)
+    assert exportScreen() == '#'\
+    '888#888#888#888#888#888#888#888#888#888#888#888#888#888#888#888\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc'
+    
+    setScreenMode(16,16)
+    afficherTuile(0,0,3)
+    assert exportScreen() == '#'\
+    '888#888#888#888#888#888#888#888#888#888#888#888#888#888#888#888\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#f00#f00#f00#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#f00#f00#f00#f00#f00#f00#f00#f00#f00#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc'
+    
+    setScreenMode(16,16)
+    afficherTuile(0,0,10)
+    assert exportScreen() == '#'\
+    '888#888#888#888#888#888#888#888#888#888#888#888#888#888#888#888\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#000#f00#f00#f00#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#000#f00#f00#f00#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#000#f00#000#000#000#000#000#f00#000#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#000#000#000#000#000#000#000#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#000#000#fff#fff#000#000#000#000#000#f00#f00#f00\n'\
+    '#888#f00#f00#f00#000#000#fff#fff#000#000#000#000#000#f00#f00#f00\n'\
+    '#888#f00#000#000#000#000#000#000#000#000#000#000#000#000#000#f00\n'\
+    '#888#f00#f00#f00#000#000#000#000#000#000#000#000#000#f00#f00#f00\n'\
+    '#888#f00#f00#f00#000#000#000#000#000#000#000#000#000#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#000#000#000#000#000#000#000#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#000#f00#000#000#000#000#000#f00#000#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#000#f00#f00#f00#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#000#f00#f00#f00#f00#f00#f00#f00\n'\
+    '#888#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00'
+    
+    #4 tests de afficherImage
+    
+    setScreenMode(4,4)
+    image4x4 = [[0,2,3,5],
+                [1,4,3,6],
+                [1,5,8,0],
+                [2,3,9,1]]
+
+    afficherImage(0,0,tuiles.colormap,image4x4)
+    assert exportScreen() == '#ccc#080#f00#800\n'\
+    '#00f#008#f00#088\n'\
+    '#00f#800#888#ccc\n'\
+    '#080#f00#fff#00f'
+    
+    setScreenMode(4,4)
+    image3x3 = [[0,2,3],
+                [1,4,3],
+                [1,5,8]]
+    afficherImage(1,1,tuiles.colormap,image3x3)
+    assert exportScreen() == '#000#000#000#000\n'\
+    '#000#ccc#080#f00\n'\
+    '#000#00f#008#f00\n'\
+    '#000#00f#800#888'
+    
+    setScreenMode(4,4)
+    image1x1=[[1]]
+    afficherImage(getScreenWidth()-1,getScreenHeight()-1,tuiles.colormap,image1x1)
+    assert exportScreen() == '#000#000#000#000\n'\
+    '#000#000#000#000\n'\
+    '#000#000#000#000\n'\
+    '#000#000#000#00f'
+    
+    setScreenMode(4,4)
+    afficherImage(0,0,tuiles.colormap,image1x1)
+    assert exportScreen() == '#00f#000#000#000\n'\
+    '#000#000#000#000\n'\
+    '#000#000#000#000\n'\
+    '#000#000#000#000'
+
+testDemineur()
