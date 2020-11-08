@@ -1,7 +1,5 @@
 import tuiles
 
-setScreenMode(128,128)
-
 #pour chaque pixel dans chque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
     for i in range(0,len(image)):    
@@ -30,7 +28,7 @@ def attendreClic():
             #sont 16x16. Comme dans afficherTuiles()
             if clic == 1 and CTRL ==False :
                 return struct(X=X//16,Y=Y//16,drapeau = False)       
-            elif clic == 2 or clic == 1 and CTRL==true:
+            elif clic == 2 or clic == 1 and CTRL==True:
                 return struct(X=X//16,Y=Y//16,drapeau = True)
         
 
@@ -77,52 +75,56 @@ def nbMinesVoisines(x,y,mines):
     largeur=len(mines[0])-1#x
     hauteur=len(mines)-1#y
     cpt=0
-    if x == largeur:#si on est a droite
-        print('droite')
+    if x == largeur and y == hauteur:#coin en bas a droite
         if mines[x-1][y]:
             cpt+=1
-        if y == hauteur: #coin en bas a droite
-            print('bas droite')
-            if mines[x-1][y-1]:
-                cpt+=1
-            if mines[x][y-1]:
-                cpt+=1
-        elif y == 0:#coin en haut a droite
-            if mines[x-1][y+1]:
-                cpt+=1
-            if mines[x][y+1]:
-                cpt+=1
-        else:#pas un coin a doite
-            if mines[x-1][y-1]:
-                cpt+=1
-            if mines[x-1][y+1]:
-                cpt+=1
-            if mines[x][y-1]:
-                cpt+=1
-            if mines[x][y+1]:
-                cpt+=1
-    elif x == 0:#si on est a gauche
+        if mines[x-1][y-1]:
+            cpt+=1
+        if mines[x][y-1]:
+            cpt+=1
+    elif x == largeur and y == 0:#coin en haut a droite
+        if mines[x-1][y+1]:
+            cpt+=1
+        if mines[x][y+1]:
+            cpt+=1
+        if mines[x-1][y]:
+            cpt+=1    
+    elif x == largeur:#pas un coin a doite
+        if mines[x-1][y-1]:
+            cpt+=1
+        if mines[x-1][y+1]:
+            cpt+=1
+        if mines[x][y-1]:
+            cpt+=1
+        if mines[x][y+1]:
+            cpt+=1
+        if mines[x-1][y]:
+            cpt+=1 
+    elif x == 0 and y== hauteur:#coin en bas a gauche
         if mines[x+1][y]:
             cpt+=1
-        if y == hauteur:#coin en bas a gauche
-            if mines[x+1][y-1]:
-                cpt+=1
-            if mines[x][y-1]:
-                cpt+=1
-        elif y == 0: #coin en haut a gauche
-            if mines[x][y+1]:
-                cpt+=1
-            if mines[x+1][y+1]:
-                cpt+=1
-        else:#pas un coin a gauche
-            if mines[x+1][y-1]:
-                cpt+=1
-            if mines[x+1][y+1]:
-                cpt+=1
-            if mines[x][y-1]:
-                cpt+=1
-            if mines[x][y+1]:
-                cpt+=1
+        if mines[x+1][y-1]:
+            cpt+=1
+        if mines[x][y-1]:
+            cpt+=1
+    elif x == 0 and y == 0: #coin en haut a gauche
+        if mines[x][y+1]:
+            cpt+=1
+        if mines[x+1][y+1]:
+            cpt+=1
+        if mines[x+1][y]:
+            cpt+=1
+    elif x == 0:#pas un coin a gauche
+        if mines[x+1][y]:
+            cpt+=1
+        if mines[x+1][y-1]:
+            cpt+=1
+        if mines[x+1][y+1]:
+            cpt+=1
+        if mines[x][y-1]:
+            cpt+=1
+        if mines[x][y+1]:
+            cpt+=1
     elif y == 0:#en haut (on  a deja fait les coins)
         if mines[x-1][y+1]:
             cpt+=1
@@ -134,7 +136,7 @@ def nbMinesVoisines(x,y,mines):
             cpt+=1
         if mines[x+1][y]:
             cpt+=1
-    elif y == hauteur:#en bas (on  a deja fait les coin)
+    elif y == hauteur:#en bas (on  a deja fait les coins)
         if mines[x-1][y-1]:
             cpt+=1
         if mines[x][y-1]:
@@ -174,6 +176,8 @@ def afficherMines(mines,drapeaux):
                 afficherTuile(i,j,9)
 
 def demineur(largeur, hauteur, nbMines):
+    setScreenMode(hauteur*16,largeur*16)
+    
     gameOver = False
     drapeaux = grilleDeBooleens(largeur, hauteur)
     
@@ -220,3 +224,13 @@ def demineur(largeur, hauteur, nbMines):
                 afficherTuile(x,y,13)#mettre un drapeau
             else:
                 afficherTuile(x,y,12)#enlever un drapeau
+                
+        #si on a mit un drapeau sur toutes les bombes
+        #et seulement sur les bombes on gagne la partie et on l'arrete
+        if mines == drapeaux:
+            print('gagner!!')
+            gameOver=True
+                
+def testDemineur():
+    1+1
+    
