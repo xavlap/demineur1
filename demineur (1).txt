@@ -233,6 +233,8 @@ def demineur(largeur, hauteur, nbMines):
                 
 def testDemineur():
     
+ 
+    
     #4 tests de afficherTuile
     setScreenMode(16,16)
     afficherTuile(0,0,12)
@@ -316,6 +318,7 @@ def testDemineur():
     
     #4 tests de afficherImage
     
+    
     setScreenMode(4,4)
     image4x4 = [[0,2,3,5],
                 [1,4,3,6],
@@ -352,5 +355,34 @@ def testDemineur():
     '#000#000#000#000\n'\
     '#000#000#000#000\n'\
     '#000#000#000#000'
-
-testDemineur()
+    
+    
+    
+                
+    #5 tests pour grille boolean
+           
+    assert grilleDeBooleens(1,1) ==[[False],[False]]
+    assert grilleDeBooleens(0,0) == []
+    assert grilleDeBooleens(-1,-1)== []
+    assert grilleDeBooleens(3,3)==[[False, False, False], [False, False, False]
+                                   , [False, False, False]]
+    assert grilleDeBooleens(2,3)==[[False, False], [False, False],
+                                   [False, False]]
+  
+    
+    
+    #5 tests pour placerMines
+    
+    assert placerMines(4,4,0,2,2) == [[False, False, False, False],
+                                      [False, False, False, False],
+                                      [False, False, False, False],
+                                      [False, False, False, False]]
+                                      
+    
+    
+    
+    
+    #5 test pour minevoisine
+    
+    
+    testDemineur()  
