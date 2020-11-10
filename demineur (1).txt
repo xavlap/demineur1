@@ -305,10 +305,33 @@ def testDemineur():
                                       [False, False, False, False]]
                                       
     
+    assert placerMines(2,2,1,1,1) ==[[False,False],[False,True]]
     
+    assert placerMines(3,3,1,-1,-1) == [[False, False, False],
+                                        [False, True, False],
+                                        [False, False, False]]
+    
+    assert placerMines(3,3,0,0,0) == [[False, False, False],
+                                      [False, False, False],
+                                      [False, False, False]]
+    
+    assert placerMines(4,4,4,4,4) ==[[False, True, False, True],
+                                     [False, True, False, False],
+                                     [False, False, False, False],
+                                     [False, False, False, True]]
     
     
     #5 test pour minevoisine
     
+    assert nbMinesVoisines(x, y, mines)
+    assert nbMinesVoisines(1, 1,[[False,False],[False,True]]) == 1
+    assert nbMinesVoisines(2, 2,[[False,False,False],[False,True,False],
+                          [False,False,False]]) == 1
+    assert nbMinesVoisines(2, 2,[[False,False,False],[False,True,False],
+                                 [False,True,False]]) == 2
+    assert nbMinesVoisines(3, 3,[[False,False,False,False],
+                                 [False,False,False,False],
+                                 [False,False,False,False],
+                                 [False,False,False,False]]) == 0
     
     testDemineur()  
