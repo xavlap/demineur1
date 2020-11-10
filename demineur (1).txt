@@ -1,21 +1,24 @@
+#9 novembre 2020
+#Par Abderrezak AGSOUS (20189331) et Xavier LAPALME (20187052)
+
 import tuiles
 
-#pour chaque pixel dans chaque ligne on change le pixel
+#Pour chaque pixel dans chaque ligne on change le pixel
 def afficherImage (x,y, colormap, image):
     for i in range(0,len(image)):    
         for j in range(0,len(image[i])):
             setPixel(x+j,y+i,colormap[image[i][j]])
 
-#puique les tuiles sont 16x16, la coordonné de pixel
-#corespond a 16x la coordonne de tuile
+#Puisque les tuiles sont 16x16, la coordonnée de pixel
+#correspond a 16 fois la coordonnée de la tuile
 def afficherTuile (x,y, tuile):
     afficherImage(x*16,y*16, tuiles.colormap,tuiles.images[tuile])
 
-#attendre que l'utilisateur clic a un endroit
+#Attendre que l'utilisateur clique a un endroit
 def attendreClic():
     while True:
-        #seulement si aucun bouton de la souris n'est utiliser
-        #on peut attendre pour un clic
+        #Seulement si aucun bouton de la souris n'est utilisé,
+        #on peut attendre pour un clique
         if getMouseButton() == 0:
             sleep(0.01)
             clic = getMouseButton()
@@ -23,7 +26,7 @@ def attendreClic():
             Y=getMouseY()
             CTRL = getMouseCtrl()
             
-            #on divise entièrement le x et le y car les images des tuiles
+            #On divise entièrement le x et le y car les images des tuiles
             #sont 16x16. Comme dans afficherTuiles()
             if clic == 1 and CTRL ==False :
                 return struct(X=X//16,Y=Y//16,drapeau = False)       
@@ -31,25 +34,25 @@ def attendreClic():
                 return struct(X=X//16,Y=Y//16,drapeau = True)
         
 
-#retourne un tableau 2D de bool false
+#Retourne un tableau 2D de boolean false
 def grilleDeBooleens(largeur, hauteur):
     matrice= [None] * hauteur
     for i in range(hauteur):
         matrice[i] = [False] * largeur
     return matrice
 
-#on place les nbMines dans un tableau de bool qu'on retourne
+#On place les nbMines dans un tableau de bool qu'on retourne
 def placerMines(largeur, hauteur, nbMines, x, y): 
     mines = grilleDeBooleens(largeur, hauteur)#on créer notre grille
     nbMinesPlacer = 0 #nombre de mines placer
     
-    #si on a pas placer toutes les mines on repasse dans le tableau
+    #Si on a pas placé toutes les mines, on repasse dans le tableau
     while nbMinesPlacer != nbMines:
         for m in range(nbMines- nbMinesPlacer):
             for i in range(len(mines)):
                 for j in range(len(mines[i])):
                     
-                    #si une valeur radom est plus petite que
+                    #si une valeur random est plus petite que
                     #1/(largeur*hauteur)on veut placer la mine
                     #1/(largeur*hauteur) car on veux que les chances de 
                     #placer la mine soient plus petites si le tableau est 
@@ -64,17 +67,20 @@ def placerMines(largeur, hauteur, nbMines, x, y):
                             nbMinesPlacer +=1
     return mines  
 
-#regarde chaque case adjacente a la coordonee (x,y) 
-#qui ne sort pas du tableau de jeu
-#s'il y a une mine on ajoute 1 au cpt(compteur)
+#Regarde chaque case adjacente à la coordonee (x,y) 
+#Qui ne sort pas du tableau de jeu
+#S'il y a une mine, on ajoute 1 au cpt(compteur)
 def nbMinesVoisines(x, y, mines):
     nbMines = 0
-
-    xStart = x - 1
+    
+    #Assume que postion est au centre
+    xStart = x - 1 
     xEnd = x + 1
     yStart = y - 1
     yEnd = y + 1
 
+    #Vérifie si la postion est sur la bordure,
+    #si oui, recentrer afin de ne pas dépasser la bordure.
     if x == 0:
         xStart = 0
     if x == len(mines[0]) - 1:
@@ -84,19 +90,20 @@ def nbMinesVoisines(x, y, mines):
     if y == len(mines) - 1:
         yEnd = y
 
+    #Vérifie pour mines vosines
     for posY in range(yStart, yEnd + 1):
         for posX in range(xStart, xEnd + 1):
             if mines[posX][posY]:
                 nbMines += 1
     return nbMines
 
-#affiche les mines et les mauvais drapeaux
+#Affiche les mines et les mauvais drapeaux
 def afficherMines(mines,drapeaux):
     for i in range(len(mines)):
         for j in range(len(mines[i])):
-            if drapeaux[i][j] and not mines[i][j]:#un drapeau pas su une mine
+            if drapeaux[i][j] and not mines[i][j]:#Un drapeau pas sur une mine
                 afficherTuile(i,j,11)
-            elif mines[i][j]:#une mine
+            elif mines[i][j]:#Une mine
                 afficherTuile(i,j,9)
 
 def demineur(largeur, hauteur, nbMines):
@@ -105,13 +112,13 @@ def demineur(largeur, hauteur, nbMines):
     gameOver = False
     drapeaux = grilleDeBooleens(largeur, hauteur)
     
-    #affiche les tuiles vides
+    #Affiche les tuiles vides
     for i in range(hauteur):
         for j in range(largeur):
             afficherTuile(i, j, 12)
             
-    #on place les mines apres le premier clic pour etre sur de ne pas clic 
-    #sur une bombe au premier clic
+    #On place les mines après le premier clique pour être sur de ne pas cliquer 
+    #sur une bombe au premier clique
     premierClic = attendreClic()
     mines = placerMines(largeur, hauteur, nbMines, premierClic.X,premierClic.Y)
     afficherTuile(premierClic.X,premierClic.Y,
@@ -124,42 +131,38 @@ def demineur(largeur, hauteur, nbMines):
         clicDrapeau = clic.drapeau
         
         if not clicDrapeau:
-            if not drapeaux[x][y]:#s'il y a un drapeau on fait rien
-                if mines[x][y]: #si click sur mine
+            if not drapeaux[x][y]:#S'il y a un drapeau on fait rien
+                if mines[x][y]: #Si clique sur mine
                     afficherMines(mines,drapeaux)
-                    afficherTuile(x,y,10)#affiche la mine ou on clic en rouge
-                    alert('gameOver')
-                    gameOver = True #on arrete le jeu
+                    afficherTuile(x,y,10)#Affiche la mine où on clique en rouge
+                    alert('Better luck next time!')
+                    gameOver = True #Stop le jeu
                     
-                else: #affichage selon nb de mines voisines
+                else: #Affichage selon nombre de mines voisines
                     afficherTuile(x,y,nbMinesVoisines(x, y, mines))
-                    #if nbMinesVoisines(x, y, mines) == 0:
-                        #for i in range(x-1, x+1):
-                            #for j in range(y-1, y+1):
-                                #if(nbMinesVoisines(i, j, mines)):
-                                    #afficherTuile(i,j,0)
+                    
         
-        #si on veux mettre ou enlever un drapeau
+        #Si on veux mettre ou enlever un drapeau
         else: 
-            drapeaux[x][y] = not drapeaux[x][y]#on change le booleen
+            drapeaux[x][y] = not drapeaux[x][y]#On change le boolean
             
-            #on affiche la case qui corespond a se qu'on veut
+            #On affiche la case qui correspond a ce qu'on veut
             if(drapeaux[x][y]):
-                afficherTuile(x,y,13)#mettre un drapeau
+                afficherTuile(x,y,13)#Mettre un drapeau
             else:
-                afficherTuile(x,y,12)#enlever un drapeau
+                afficherTuile(x,y,12)#Enlever un drapeau
                 
-        #si on a mit un drapeau sur toutes les bombes
-        #et seulement sur les bombes on gagne la partie et on l'arrete
+        #Si on a mit un drapeau sur toutes les bombes
+        #et seulement sur les bombes, on gagne la partie et on l'arrête
         if mines == drapeaux:
-            alert('gagner!!')
+            alert('Congratulations!')
             gameOver=True
                 
 def testDemineur():
     
  
     
-    #5 tests de afficherTuile
+    # 5 tests de afficherTuile
     setScreenMode(16,16)
     afficherTuile(0,0,12)
     assert exportScreen() == '#'\
@@ -260,7 +263,7 @@ def testDemineur():
     '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
     '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc'
     
-    #5 tests de afficherImage
+    # 5 tests de afficherImage
     
     
     setScreenMode(4,4)
@@ -310,7 +313,7 @@ def testDemineur():
     '#000#000#000#00f\n'\
     '#000#000#000#00f'
                 
-    #5 tests pour grille boolean
+    # 5 tests pour grille boolean
            
     assert grilleDeBooleens(1,1) ==[[False]]
     assert grilleDeBooleens(0,0) == []
@@ -322,7 +325,7 @@ def testDemineur():
     assert grilleDeBooleens(2,3)==[[False, False], [False, False],
                                    [False, False]]
     
-    #5 tests pour placerMines
+    # 5 tests pour placerMines
     
     assert placerMines(4,4,0,2,2) == [[False, False, False, False],
                                       [False, False, False, False],
@@ -346,7 +349,7 @@ def testDemineur():
                                      [True, True, True, True]]
     
     
-    #5 test pour minevoisine
+    # 5 tests pour minevoisine
     
     assert nbMinesVoisines(0,0,[[False,False],
                                 [False,True]]) == 1
