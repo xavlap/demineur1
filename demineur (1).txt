@@ -40,131 +40,57 @@ def grilleDeBooleens(largeur, hauteur):
     return matrice
 
 #retourne un valeur au hasard en zero en max
-def valeurAuHasard(max):
+def valeurAuHasard():
     return math.floor(random() * max)
 
 
 #on place les nbMines dans un tableau de bool qu'on retourne
 def placerMines(largeur, hauteur, nbMines, x, y): 
-    mines = grilleDeBooleens(largeur, hauteur)#on créer notre grille
     
-    #on pose nbMines position dans la grille a true
-    for i in range(nbMines):
-        minePlacer = False # la mine n'est pas encore placer
-        
-        #tant qu'on ne trouve pas une bonne place pour
-        #la mine on lui trouve une nouvelle place
-        while not minePlacer:
-            ligne= valeurAuHasard(hauteur)
-            colonne = valeurAuHasard(largeur)
-            
-            #on s'assure de ne pas placer deux mines a la meme place
-            #et de ne pas placer de mine a la coordonnee (x,y)
-            if  ligne == y and colonne ==x or mines[ligne][colonne]==True:
-                continue
-            else:
-                mines[ligne][colonne]=True
-                minePlacer = True #la mine a bien ete placer
-            
+    mines = grilleDeBooleens(largeur, hauteur)#on créer notre grille
+    nbMinesPlacer = 0 #nombre de mines placer
+    
+    #si on a pas placer toutes les mines on repasse dans le tableau
+    while nbMinesPlacer != nbMines:
+        for m in range(nbMines- nbMinesPlacer):
+            for i in range(len(mines)):
+                for j in range(len(mines[i])):
+                    #si une valeur radom est plus petite 
+                    #que 1/(largeur*hauteur)on veut placer la mine
+                    #1/(largeur*hauteur) car on veux que les chances de placer
+                    #la mine soient plus petites si le tableau est plus grand
+                    #pour placer les mines partout dans le tableau
+                    if (random() <= 1/(largeur*hauteur) and 
+                        mines[i][j] != True and nbMinesPlacer != nbMines):
+                        mines[i][j] = True
+                        nbMinesPlacer +=1
     return mines  
 
 #regarde chaque case adjacente a la coordonee (x,y)
 #s'il y a une mine on ajoute 1 au cpt(compteur)
 #surement facons d'ameliorer le code...mais je ne vois pas 
-def nbMinesVoisines(x,y,mines):
-    largeur=len(mines[0])-1#x
-    hauteur=len(mines)-1#y
-    cpt=0
-    if x == largeur and y == hauteur:#coin en bas a droite
-        if mines[x-1][y]:
-            cpt+=1
-        if mines[x-1][y-1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-    elif x == largeur and y == 0:#coin en haut a droite
-        if mines[x-1][y+1]:
-            cpt+=1
-        if mines[x][y+1]:
-            cpt+=1
-        if mines[x-1][y]:
-            cpt+=1    
-    elif x == largeur:#pas un coin a doite
-        if mines[x-1][y-1]:
-            cpt+=1
-        if mines[x-1][y+1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-        if mines[x][y+1]:
-            cpt+=1
-        if mines[x-1][y]:
-            cpt+=1 
-    elif x == 0 and y== hauteur:#coin en bas a gauche
-        if mines[x+1][y]:
-            cpt+=1
-        if mines[x+1][y-1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-    elif x == 0 and y == 0: #coin en haut a gauche
-        if mines[x][y+1]:
-            cpt+=1
-        if mines[x+1][y+1]:
-            cpt+=1
-        if mines[x+1][y]:
-            cpt+=1
-    elif x == 0:#pas un coin a gauche
-        if mines[x+1][y]:
-            cpt+=1
-        if mines[x+1][y-1]:
-            cpt+=1
-        if mines[x+1][y+1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-        if mines[x][y+1]:
-            cpt+=1
-    elif y == 0:#en haut (on  a deja fait les coins)
-        if mines[x-1][y+1]:
-            cpt+=1
-        if mines[x][y+1]:
-            cpt+=1
-        if mines[x+1][y+1]:
-            cpt+=1
-        if mines[x-1][y]:
-            cpt+=1
-        if mines[x+1][y]:
-            cpt+=1
-    elif y == hauteur:#en bas (on  a deja fait les coins)
-        if mines[x-1][y-1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-        if mines[x+1][y-1]:
-            cpt+=1
-        if mines[x-1][y]:
-            cpt+=1
-        if mines[x+1][y]:
-            cpt+=1
-    else:# pas sur les cotes
-        if mines[x-1][y+1]:
-            cpt+=1
-        if mines[x][y+1]:
-            cpt+=1
-        if mines[x+1][y+1]:
-            cpt+=1
-        if mines[x-1][y-1]:
-            cpt+=1
-        if mines[x][y-1]:
-            cpt+=1
-        if mines[x+1][y-1]:
-            cpt+=1
-        if mines[x+1][y]:
-            cpt+=1
-        if mines[x-1][y]:
-            cpt+=1
-    return cpt
+def nbMinesVoisines(x, y, mines):
+    nbMines = 0
+
+    xStart = x - 1
+    xEnd = x + 1
+    yStart = y - 1
+    yEnd = y + 1
+
+    if x == 0:
+        xStart = 0
+    if x == len(mines[0]) - 1:
+        xEnd = x
+    if y == 0:
+        yStart = 0
+    if y == len(mines) - 1:
+        yEnd = y
+
+    for posY in range(yStart, yEnd + 1):
+        for posX in range(xStart, xEnd + 1):
+            if mines[posX][posY]:
+                nbMines += 1
+    return nbMines
 
 #affiche les mines et les mauvais drapeaux
 def afficherMines(mines,drapeaux):
