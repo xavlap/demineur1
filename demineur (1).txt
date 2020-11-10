@@ -12,7 +12,6 @@ def afficherTuile (x,y, tuile):
     afficherImage(x*16,y*16, tuiles.colormap,tuiles.images[tuile])
 
 #attendre que l'utilisateur clic a un endroit
-#je crois qu'il manque qqch pour attendre que le clic soit "arreter"
 def attendreClic():
     while True:
         #seulement si aucun bouton de la souris n'est utiliser
@@ -39,14 +38,8 @@ def grilleDeBooleens(largeur, hauteur):
         matrice[i] = [False] * largeur
     return matrice
 
-#retourne un valeur au hasard en zero en max
-def valeurAuHasard():
-    return math.floor(random() * max)
-
-
 #on place les nbMines dans un tableau de bool qu'on retourne
 def placerMines(largeur, hauteur, nbMines, x, y): 
-    
     mines = grilleDeBooleens(largeur, hauteur)#on créer notre grille
     nbMinesPlacer = 0 #nombre de mines placer
     
@@ -55,20 +48,25 @@ def placerMines(largeur, hauteur, nbMines, x, y):
         for m in range(nbMines- nbMinesPlacer):
             for i in range(len(mines)):
                 for j in range(len(mines[i])):
-                    #si une valeur radom est plus petite 
-                    #que 1/(largeur*hauteur)on veut placer la mine
-                    #1/(largeur*hauteur) car on veux que les chances de placer
-                    #la mine soient plus petites si le tableau est plus grand
-                    #pour placer les mines partout dans le tableau
-                    if (random() <= 1/(largeur*hauteur) and 
+                    
+                    #si une valeur radom est plus petite que
+                    #1/(largeur*hauteur)on veut placer la mine
+                    #1/(largeur*hauteur) car on veux que les chances de 
+                    #placer la mine soient plus petites si le tableau est 
+                    #pour placer les mines partout dans le tableau plus grand
+                    
+                    if (random() <= 1/(largeur*hauteur) and
                         mines[i][j] != True and nbMinesPlacer != nbMines):
-                        mines[i][j] = True
-                        nbMinesPlacer +=1
+                        if i == x and j == y:
+                            continue
+                        else:
+                            mines[i][j] = True
+                            nbMinesPlacer +=1
     return mines  
 
-#regarde chaque case adjacente a la coordonee (x,y)
+#regarde chaque case adjacente a la coordonee (x,y) 
+#qui ne sort pas du tableau de jeu
 #s'il y a une mine on ajoute 1 au cpt(compteur)
-#surement facons d'ameliorer le code...mais je ne vois pas 
 def nbMinesVoisines(x, y, mines):
     nbMines = 0
 
@@ -96,9 +94,9 @@ def nbMinesVoisines(x, y, mines):
 def afficherMines(mines,drapeaux):
     for i in range(len(mines)):
         for j in range(len(mines[i])):
-            if drapeaux[i][j] and not mines[i][j]:
+            if drapeaux[i][j] and not mines[i][j]:#un drapeau pas su une mine
                 afficherTuile(i,j,11)
-            elif mines[i][j]:
+            elif mines[i][j]:#une mine
                 afficherTuile(i,j,9)
 
 def demineur(largeur, hauteur, nbMines):
@@ -130,7 +128,7 @@ def demineur(largeur, hauteur, nbMines):
                 if mines[x][y]: #si click sur mine
                     afficherMines(mines,drapeaux)
                     afficherTuile(x,y,10)#affiche la mine ou on clic en rouge
-                    print("gameOver")
+                    alert('gameOver')
                     gameOver = True #on arrete le jeu
                     
                 else: #affichage selon nb de mines voisines
@@ -154,14 +152,14 @@ def demineur(largeur, hauteur, nbMines):
         #si on a mit un drapeau sur toutes les bombes
         #et seulement sur les bombes on gagne la partie et on l'arrete
         if mines == drapeaux:
-            print('gagner!!')
+            alert('gagner!!')
             gameOver=True
                 
 def testDemineur():
     
  
     
-    #4 tests de afficherTuile
+    #5 tests de afficherTuile
     setScreenMode(16,16)
     afficherTuile(0,0,12)
     assert exportScreen() == '#'\
@@ -242,7 +240,27 @@ def testDemineur():
     '#888#f00#f00#f00#f00#f00#f00#f00#000#f00#f00#f00#f00#f00#f00#f00\n'\
     '#888#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00#f00'
     
-    #4 tests de afficherImage
+    setScreenMode(16,16)
+    afficherTuile(0,0,6)
+    assert exportScreen() == '#'\
+    '888#888#888#888#888#888#888#888#888#888#888#888#888#888#888#888\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#088#088#088#088#088#088#088#088#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#088#088#088#088#088#088#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#088#088#088#088#088#088#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#088#088#088#088#088#088#088#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#ccc#ccc#ccc#ccc#088#088#088#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#ccc#ccc#ccc#ccc#088#088#088#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#088#088#088#088#088#088#088#088#088#088#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#088#088#088#088#088#088#088#088#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc\n'\
+    '#888#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc#ccc'
+    
+    #5 tests de afficherImage
     
     
     setScreenMode(4,4)
@@ -269,7 +287,8 @@ def testDemineur():
     
     setScreenMode(4,4)
     image1x1=[[1]]
-    afficherImage(getScreenWidth()-1,getScreenHeight()-1,tuiles.colormap,image1x1)
+    afficherImage(getScreenWidth()-1,getScreenHeight()-1,
+                  tuiles.colormap,image1x1)
     assert exportScreen() == '#000#000#000#000\n'\
     '#000#000#000#000\n'\
     '#000#000#000#000\n'\
@@ -282,20 +301,26 @@ def testDemineur():
     '#000#000#000#000\n'\
     '#000#000#000#000'
     
-    
-    
+    setScreenMode(4,4)
+    image2x1=[[1],
+             [1]]
+    afficherImage(3,2,tuiles.colormap,image2x1)
+    assert exportScreen() == '#000#000#000#000\n'\
+    '#000#000#000#000\n'\
+    '#000#000#000#00f\n'\
+    '#000#000#000#00f'
                 
     #5 tests pour grille boolean
            
-    assert grilleDeBooleens(1,1) ==[[False],[False]]
+    assert grilleDeBooleens(1,1) ==[[False]]
     assert grilleDeBooleens(0,0) == []
     assert grilleDeBooleens(-1,-1)== []
-    assert grilleDeBooleens(3,3)==[[False, False, False], [False, False, False]
-                                   , [False, False, False]]
+    assert grilleDeBooleens(3,3)==[[False, False, False], 
+                                   [False, False, False],
+                                   [False, False, False]]
+    
     assert grilleDeBooleens(2,3)==[[False, False], [False, False],
                                    [False, False]]
-  
-    
     
     #5 tests pour placerMines
     
@@ -305,33 +330,41 @@ def testDemineur():
                                       [False, False, False, False]]
                                       
     
-    assert placerMines(2,2,1,1,1) ==[[False,False],[False,True]]
+    assert placerMines(0,0,0,0,0) ==[]
     
-    assert placerMines(3,3,1,-1,-1) == [[False, False, False],
-                                        [False, True, False],
+    assert placerMines(3,3,0,-1,-1) == [[False, False, False],
+                                        [False, False, False],
                                         [False, False, False]]
     
     assert placerMines(3,3,0,0,0) == [[False, False, False],
                                       [False, False, False],
                                       [False, False, False]]
     
-    assert placerMines(4,4,4,4,4) ==[[False, True, False, True],
-                                     [False, True, False, False],
-                                     [False, False, False, False],
-                                     [False, False, False, True]]
+    assert placerMines(4,4,15,0,0) ==[[False, True, True, True],
+                                     [True, True, True, True],
+                                     [True, True, True, True],
+                                     [True, True, True, True]]
     
     
     #5 test pour minevoisine
     
-    assert nbMinesVoisines(x, y, mines)
-    assert nbMinesVoisines(1, 1,[[False,False],[False,True]]) == 1
-    assert nbMinesVoisines(2, 2,[[False,False,False],[False,True,False],
-                          [False,False,False]]) == 1
-    assert nbMinesVoisines(2, 2,[[False,False,False],[False,True,False],
+    assert nbMinesVoisines(0,0,[[False,False],
+                                [False,True]]) == 1
+    
+    assert nbMinesVoisines(1, 1,[[False,False],
+                                 [False,True]]) == 1
+    
+    assert nbMinesVoisines(2, 2,[[False,False,False],
+                                 [False,True,False],
+                                 [False,False,False]]) == 1
+    
+    assert nbMinesVoisines(2, 2,[[False,False,False],
+                                 [False,True,False],
                                  [False,True,False]]) == 2
+    
     assert nbMinesVoisines(3, 3,[[False,False,False,False],
                                  [False,False,False,False],
                                  [False,False,False,False],
                                  [False,False,False,False]]) == 0
     
-    testDemineur()  
+testDemineur()
