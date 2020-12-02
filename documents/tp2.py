@@ -72,7 +72,10 @@ def init():
        #jeu table td { border: 0; padding: 1px 2px; height: auto; }
        #jeu table td img { height: auto; }
     ''' 
-    main.innerHTML+='<div id="jeu">'+afficherCartes(cartesMelanger())+'</div>'
+    main.innerHTML+= '<div id="jeu">'+afficherCartes(cartesMelanger())+'</div>'
+    
+    case0 = document.querySelector("case0")
+    case0.setAttribute("style", "background-color: lime")
     
 
 def onClic(pos):
@@ -90,28 +93,26 @@ def cartesMelanger():
     
 def table(contenu): return '<table>' + contenu + '</table>'
 def tr(contenu): return '<tr>' + contenu + '</tr>'
-def td(contenu): return '<td>' + contenu + '</td>'
+def td(contenu,case):
+    print('<td id="case'+str(case)+'">' + contenu + '</td>')
+    
+    return '<td id="case"'+str(case)+'">' + contenu + '</td>'
 
 
 def afficherCartes(cartes):
     global tabCartes
-    tabCartesMelange1 =['']*13
-    tabCartesMelange2 =['']*13
-    tabCartesMelange3 =['']*13
-    tabCartesMelange4 =['']*13
-    for i in range(13):
-        tabCartesMelange1[i] = tabCartes[cartes[i]]
-    for i in range(13):
-        tabCartesMelange2[i] = tabCartes[cartes[i+13]]
-    for i in range(13):
-        tabCartesMelange3[i] = tabCartes[cartes[i+26]]
-    for i in range(13):
-        tabCartesMelange4[i] = tabCartes[cartes[i+39]]
+    tabCartesMelange =['']*52
+    
+    for i in range(52):
+        if cartes[i]==0 or cartes[i]==1 or cartes[i]==2 or cartes[i]==3:
+            continue        
+        tabCartesMelange[i] = tabCartes[cartes[i]]
+    
         
-    string = (tr(''.join(map(td,tabCartesMelange1))))
-    string += (tr(''.join(map(td,tabCartesMelange2))))
-    string += (tr(''.join(map(td,tabCartesMelange3))))
-    string += (tr(''.join(map(td,tabCartesMelange4))))
+    string = (tr(''.join(map(td,tabCartesMelange[0:13],list(range(13))))))
+    string += (tr(''.join(map(td,tabCartesMelange[13:26],list(range(13,26))))))
+    string += (tr(''.join(map(td,tabCartesMelange[26:39],list(range(26,39))))))
+    string += (tr(''.join(map(td,tabCartesMelange[39:52],list(range(39,52))))))
     
     return table(string)
     
