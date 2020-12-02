@@ -4,44 +4,44 @@
 
 
 #tableau des cartes 
-tabCartes = ['<img src = "cards/AC.sgv">', '<img src = "cards/AD.sgv">',
-                    '<img src = "cards/AH.sgv">', '<img src = "cards/AS.sgv">',
+tabCartes = ['<img src="cards/AC.svg">', '<img src="cards/AD.svg">',
+                    '<img src="cards/AH.svg">', '<img src="cards/AS.svg">',
                     
-                    '<img src = "cards/2C.sgv">', '<img src = "cards/2D.sgv">',
-                    '<img src = "cards/2H.sgv">', '<img src = "cards/2S.sgv">',
+                    '<img src="cards/2C.svg">', '<img src="cards/2D.svg">',
+                    '<img src="cards/2H.svg">', '<img src="cards/2S.svg">',
                     
-                    '<img src = "cards/3C.sgv">', '<img src = "cards/3D.sgv">',
-                    '<img src = "cards/3H.sgv">', '<img src = "cards/3S.sgv">',
+                    '<img src="cards/3C.svg">', '<img src="cards/3D.svg">',
+                    '<img src="cards/3H.svg">', '<img src="cards/3S.svg">',
                     
-                    '<img src = "cards/4C.sgv">', '<img src = "cards/4D.sgv">',
-                    '<img src = "cards/4H.sgv">', '<img src = "cards/4S.sgv">',
+                    '<img src="cards/4C.svg">', '<img src="cards/4D.svg">',
+                    '<img src="cards/4H.svg">', '<img src="cards/4S.svg">',
                     
-                    '<img src = "cards/5C.sgv">', '<img src = "cards/5D.sgv">',
-                    '<img src = "cards/5H.sgv">', '<img src = "cards/5S.sgv">',
+                    '<img src="cards/5C.svg">', '<img src="cards/5D.svg">',
+                    '<img src="cards/5H.svg">', '<img src="cards/5S.svg">',
                     
-                    '<img src = "cards/6C.sgv">', '<img src = "cards/6D.sgv">',
-                    '<img src = "cards/6H.sgv">', '<img src = "cards/6S.sgv">',
+                    '<img src="cards/6C.svg">', '<img src="cards/6D.svg">',
+                    '<img src="cards/6H.svg">', '<img src="cards/6S.svg">',
                     
-                    '<img src = "cards/7C.sgv">', '<img src = "cards/7D.sgv">',
-                    '<img src = "cards/7H.sgv">', '<img src = "cards/7S.sgv">',
+                    '<img src="cards/7C.svg">', '<img src="cards/7D.svg">',
+                    '<img src="cards/7H.svg">', '<img src="cards/7S.svg">',
+                   
+                    '<img src="cards/8C.svg">', '<img src="cards/8D.svg">',
+                    '<img src="cards/8H.svg">', '<img src="cards/8S.svg">',
                     
-                    '<img src = "cards/8C.sgv">', '<img src = "cards/8D.sgv">',
-                    '<img src = "cards/8H.sgv">', '<img src = "cards/8S.sgv">',
+                    '<img src="cards/9C.svg">', '<img src="cards/9D.svg">',
+                    '<img src="cards/9H.svg">', '<img src="cards/9S.svg">',
                     
-                    '<img src = "cards/9C.sgv">', '<img src = "cards/9D.sgv">',
-                    '<img src = "cards/9H.sgv">', '<img src = "cards/9S.sgv">',
+                    '<img src="cards/10C.svg">','<img src="cards/10D.svg">',
+                    '<img src="cards/10H.svg">','<img src="cards/10S.svg">',
                     
-                    '<img src = "cards/10C.sgv">','<img src = "cards/10D.sgv">',
-                    '<img src = "cards/10H.sgv">','<img src = "cards/10S.sgv">',
+                    '<img src="cards/JC.svg">', '<img src="cards/JD.svg">',
+                    '<img src="cards/JH.svg">', '<img src="cards/JS.svg">',
                     
-                    '<img src = "cards/JC.sgv">', '<img src = "cards/JD.sgv">',
-                    '<img src = "cards/JH.sgv">', '<img src = "cards/JS.sgv">',
+                    '<img src="cards/QC.svg">', '<img src="cards/QD.svg">',
+                    '<img src="cards/QH.svg">', '<img src="cards/QS.svg">',
                     
-                    '<img src = "cards/QC.sgv">', '<img src = "cards/QD.sgv">',
-                    '<img src = "cards/QH.sgv">', '<img src = "cards/QS.sgv">',
-                    
-                    '<img src = "cards/KC.sgv">', '<img src = "cards/KD.sgv">',
-                    '<img src = "cards/KH.sgv">', '<img src = "cards/KS.sgv">']
+                    '<img src="cards/KC.svg">', '<img src="cards/KD.svg">',
+                    '<img src="cards/KH.svg">', '<img src="cards/KS.svg">']
                     
 def init():
     main = document.querySelector("#main")
@@ -94,7 +94,8 @@ def td(contenu): return '<td>' + contenu + '</td>'
 
 
 def afficherCartes(cartes):
-    return table(tr(td('<img src="cards/2S.svg">')))
+    global tabCartes
+    return table(tr(td(tabCartes[cartes[1]])))
     
     
     
