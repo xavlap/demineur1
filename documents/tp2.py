@@ -95,7 +95,26 @@ def td(contenu): return '<td>' + contenu + '</td>'
 
 def afficherCartes(cartes):
     global tabCartes
-    return table(tr(td(tabCartes[cartes[1]])))
+    tabCartesMelange1 =['']*13
+    tabCartesMelange2 =['']*13
+    tabCartesMelange3 =['']*13
+    tabCartesMelange4 =['']*13
+    for i in range(13):
+        tabCartesMelange1[i] = tabCartes[cartes[i]]
+    for i in range(13):
+        tabCartesMelange2[i] = tabCartes[cartes[i+13]]
+    for i in range(13):
+        tabCartesMelange3[i] = tabCartes[cartes[i+26]]
+    for i in range(13):
+        tabCartesMelange4[i] = tabCartes[cartes[i+39]]
+        
+    string = (tr(''.join(map(td,tabCartesMelange1))))
+    string += (tr(''.join(map(td,tabCartesMelange2))))
+    string += (tr(''.join(map(td,tabCartesMelange3))))
+    string += (tr(''.join(map(td,tabCartesMelange4))))
+    
+    return table(string)
+    
     
     
     
