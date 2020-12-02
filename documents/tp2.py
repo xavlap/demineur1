@@ -74,8 +74,10 @@ def init():
     ''' 
     main.innerHTML+= '<div id="jeu">'+afficherCartes(cartesMelanger())+'</div>'
     
-    case0 = document.querySelector("case0")
-    case0.setAttribute("style", "background-color: lime")
+    case1 = document.querySelector("case1").setAttribute("style","backgroud-color: lime")
+    print(case1)
+    #case1.setAttribute("style", "background-color: lime")
+    
     
 
 def onClic(pos):
@@ -95,8 +97,8 @@ def table(contenu): return '<table>' + contenu + '</table>'
 def tr(contenu): return '<tr>' + contenu + '</tr>'
 def td(contenu,case):
     print('<td id="case'+str(case)+'">' + contenu + '</td>')
-    
-    return '<td id="case"'+str(case)+'">' + contenu + '</td>'
+    return '<td id="case1">' + contenu + '</td>'
+    #return '<td id="case"'+str(case)+'">' + contenu + '</td>'
 
 
 def afficherCartes(cartes):
