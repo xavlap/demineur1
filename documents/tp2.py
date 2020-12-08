@@ -74,6 +74,8 @@ def init():
     ''' 
     main.innerHTML+= '<div id="jeu">'+afficherCartes(cartesMelanger())+'</div>'
     
+    #je sais pas pourquoi je peux pas faire ca come si case 1 existe pas mais 
+    #j'écrit bien son id dans td()
     case1 = document.querySelector("case1").setAttribute("style","backgroud-color: lime")
     print(case1)
     #case1.setAttribute("style", "background-color: lime")
@@ -95,10 +97,12 @@ def cartesMelanger():
     
 def table(contenu): return '<table>' + contenu + '</table>'
 def tr(contenu): return '<tr>' + contenu + '</tr>'
+
+#mauvais nom de fonction
 def td(contenu,case):
     print('<td id="case'+str(case)+'">' + contenu + '</td>')
-    return '<td id="case1">' + contenu + '</td>'
-    #return '<td id="case"'+str(case)+'">' + contenu + '</td>'
+    return '<td id="case1">' + contenu + '</td>' #test pour etre sur d'avoir id="case1"
+    #return '<td id="case"'+str(case)+'">' + contenu + '</td>' #se qu'il faudra mettre
 
 
 def afficherCartes(cartes):
