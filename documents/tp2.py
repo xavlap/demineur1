@@ -123,10 +123,7 @@ def mettreEnVert(cartes):
     positionVide1 = cartes.index(1)-1
     positionVide2 = cartes.index(2)-1
     positionVide3 = cartes.index(3)-1
-    print(tabCartes[cartes[positionVide0]])
-    print(tabCartes[cartes[positionVide1]])
-    print(tabCartes[cartes[positionVide2]])
-    print(tabCartes[cartes[positionVide3]])
+    
     
     for i in range(52):
         if i%4 == cartes[positionVide0]%4 and i//4 == cartes[positionVide0]//4:
@@ -137,10 +134,7 @@ def mettreEnVert(cartes):
             document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
         if i%4 == cartes[positionVide3]%4 and i//4 == cartes[positionVide3]//4:
             document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-    print(positionVide0)
-    print(positionVide1)
-    print(positionVide2)
-    print(positionVide3)
+    
     
     
     
