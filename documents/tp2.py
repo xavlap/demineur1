@@ -123,25 +123,48 @@ def mettreEnVert(cartes):
     positionVide2 = cartes.index(2)-1
     positionVide3 = cartes.index(3)-1
     
+    testRoi0 = cartes[positionVide0]%52 < 48
+    testRoi1 = cartes[positionVide1]%52 < 48
+    testRoi2 = cartes[positionVide2]%52 < 48
+    testRoi3 = cartes[positionVide3]%52 < 48
+    
+    testPremiereCarte0 = (positionVide0+1)%13 == 0
+    testPremiereCarte1 = (positionVide1+1)%13 == 0
+    testPremiereCarte2 = (positionVide2+1)%13 == 0
+    testPremiereCarte3 = (positionVide3+1)%13 == 0
+    
     for i in range(52):
-        if cartes[positionVide0]%52 < 48:
+        if testPremiereCarte0:
+            for i in range(4,8):
+                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+        if testRoi0:
             if i%4 == cartes[positionVide0]%4 and i//4 == cartes[positionVide0]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
                 
-        if cartes[positionVide1]%52 < 48 :
+        if testPremiereCarte1:
+            for i in range(4,8):
+                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")   
+        if testRoi1:
             if i%4 == cartes[positionVide1]%4 and i//4 == cartes[positionVide1]//4:
-                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")   
                 
-        if cartes[positionVide2]%52 < 48:
+        if testPremiereCarte2:
+            for i in range(4,8):
+                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+        if testRoi2:
             if i%4 == cartes[positionVide2]%4 and i//4 == cartes[positionVide2]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
                 
-        if cartes[positionVide3]%52 < 48:
+        if testPremiereCarte3:
+            for i in range(4,8):
+                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")                
+        if testRoi3:
             if i%4 == cartes[positionVide3]%4 and i//4 == cartes[positionVide3]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
     
     
-    
+
+  
     
     
     
