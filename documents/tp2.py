@@ -42,6 +42,16 @@ tabCartes = [' ', ' ',             #les as vide pour pas les affichers
                     
                     '<img src="cards/KC.svg">', '<img src="cards/KD.svg">',
                     '<img src="cards/KH.svg">', '<img src="cards/KS.svg">']
+
+def melangerTab(tab):
+    for i in range(len(tab)-1,0,-1):
+        rand = math.floor(random()*i)
+        temp = tab[i]
+        tab[i] = tab[rand]
+        tab[rand] = temp
+    return tab
+    
+ordreDesCartes=melangerTab(list(range(52)))
                     
 def init():
     main = document.querySelector("#main")
@@ -72,16 +82,18 @@ def init():
        #jeu table td { border: 0; padding: 1px 2px; height: auto; }
        #jeu table td img { height: auto; }
     ''' 
-    ordreDesCartes=melangerTab(list(range(52)))
     
     main.innerHTML+= '<div id="jeu">'+afficherCartes(ordreDesCartes)+'</div>'
     #main.innerHTML+= '<br><button onclick="brasser();"></button>'
     #main.innerHTML+= '<br><br><button onclick="init();">Nouvelle partie </button><br>'
-    mettreEnVert(ordreDesCartes)
+    mettreEnVert()
     
 
 def clic(pos):
-    print(pos) 
+    global ordreDesCartes
+    
+    pass
+    
 
 #melange un tableau 
 def melangerTab(tab):
@@ -117,49 +129,58 @@ def afficherCartes(cartes):
     return table(string)
     
 
-def mettreEnVert(cartes):    
-    positionVide0 = cartes.index(0)-1
-    positionVide1 = cartes.index(1)-1
-    positionVide2 = cartes.index(2)-1
-    positionVide3 = cartes.index(3)-1
+def mettreEnVert():  
+
+    for i in range(52):
+        document.querySelector("#case" + str(i)).setAttribute("style", "background-color: none")
+        
+    positionVide0 = ordreDesCartes.index(0)-1
+    positionVide1 = ordreDesCartes.index(1)-1
+    positionVide2 = ordreDesCartes.index(2)-1
+    positionVide3 = ordreDesCartes.index(3)-1
     
-    testRoi0 = cartes[positionVide0]%52 < 48
-    testRoi1 = cartes[positionVide1]%52 < 48
-    testRoi2 = cartes[positionVide2]%52 < 48
-    testRoi3 = cartes[positionVide3]%52 < 48
+    testRoi0 = ordreDesCartes[positionVide0]%52 < 48
+    testRoi1 = ordreDesCartes[positionVide1]%52 < 48
+    testRoi2 = ordreDesCartes[positionVide2]%52 < 48
+    testRoi3 = ordreDesCartes[positionVide3]%52 < 48
     
     testPremiereCarte0 = (positionVide0+1)%13 == 0
     testPremiereCarte1 = (positionVide1+1)%13 == 0
     testPremiereCarte2 = (positionVide2+1)%13 == 0
     testPremiereCarte3 = (positionVide3+1)%13 == 0
     
+    if testPremiereCarte0:
+        for i in range(4,8):
+            document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+                
+    if testPremiereCarte1:
+        for i in range(4,8):
+            document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime") 
+                
+    if testPremiereCarte2:
+        for i in range(4,8):
+            document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+                
+    if testPremiereCarte3:
+        for i in range(4,8):
+            document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")                
+    
     for i in range(52):
-        if testPremiereCarte0:
-            for i in range(4,8):
-                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+        
         if testRoi0:
-            if i%4 == cartes[positionVide0]%4 and i//4 == cartes[positionVide0]//4:
+            if i%4 == ordreDesCartes[positionVide0]%4 and i//4 == ordreDesCartes[positionVide0]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-                
-        if testPremiereCarte1:
-            for i in range(4,8):
-                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")   
+          
         if testRoi1:
-            if i%4 == cartes[positionVide1]%4 and i//4 == cartes[positionVide1]//4:
-                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")   
-                
-        if testPremiereCarte2:
-            for i in range(4,8):
-                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")
+            if i%4 == ordreDesCartes[positionVide1]%4 and i//4 == ordreDesCartes[positionVide1]//4:
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")     
+       
         if testRoi2:
-            if i%4 == cartes[positionVide2]%4 and i//4 == cartes[positionVide2]//4:
+            if i%4 == ordreDesCartes[positionVide2]%4 and i//4 == ordreDesCartes[positionVide2]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-                
-        if testPremiereCarte3:
-            for i in range(4,8):
-                document.querySelector("#case" + str(i)).setAttribute("style", "background-color: lime")                
+  
         if testRoi3:
-            if i%4 == cartes[positionVide3]%4 and i//4 == cartes[positionVide3]//4:
+            if i%4 == ordreDesCartes[positionVide3]%4 and i//4 == ordreDesCartes[positionVide3]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
     
     
