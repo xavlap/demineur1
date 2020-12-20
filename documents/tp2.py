@@ -75,12 +75,13 @@ def init():
     ordreDesCartes=melangerTab(list(range(52)))
     
     main.innerHTML+= '<div id="jeu">'+afficherCartes(ordreDesCartes)+'</div>'
-    
+    #main.innerHTML+= '<br><button onclick="brasser();"></button>'
+    #main.innerHTML+= '<br><br><button onclick="init();">Nouvelle partie </button><br>'
     mettreEnVert(ordreDesCartes)
     
 
-def onClic(pos):
-    pass
+def clic(pos):
+    print(pos) 
 
 #melange un tableau 
 def melangerTab(tab):
@@ -92,9 +93,9 @@ def melangerTab(tab):
     return tab
     
     
-def tdEtIdPourCarte(tabCartes):
+def tdEtIdPourCarte(tabCartes,cartes):
     for i in range(len(tabCartes)):
-        tabCartes[i] = '<td id="case'+str(i)+'">' + tabCartes[i] + '</td>'
+        tabCartes[i] = '<td id="case'+str(i)+'" onclick="clic(' + str(cartes.index(i)) + ')">' + tabCartes[i] + '</td>'
     return tabCartes
 
 def table(contenu): return '<table>' + contenu + '</table>'
@@ -102,7 +103,7 @@ def tr(contenu): return '<tr>' + contenu + '</tr>'
 
 def afficherCartes(cartes):
     global tabCartes
-    cartesPasMelange = tdEtIdPourCarte(tabCartes.copy())
+    cartesPasMelange = tdEtIdPourCarte(tabCartes.copy(),cartes)
     tabCartesMelange =['']*52
     
     for i in range(52):
@@ -122,16 +123,22 @@ def mettreEnVert(cartes):
     positionVide2 = cartes.index(2)-1
     positionVide3 = cartes.index(3)-1
     
-    
     for i in range(52):
-        if i%4 == cartes[positionVide0]%4 and i//4 == cartes[positionVide0]//4:
-            document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-        if i%4 == cartes[positionVide1]%4 and i//4 == cartes[positionVide1]//4:
-            document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-        if i%4 == cartes[positionVide2]%4 and i//4 == cartes[positionVide2]//4:
-            document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
-        if i%4 == cartes[positionVide3]%4 and i//4 == cartes[positionVide3]//4:
-            document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
+        if cartes[positionVide0]%52 < 48:
+            if i%4 == cartes[positionVide0]%4 and i//4 == cartes[positionVide0]//4:
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
+                
+        if cartes[positionVide1]%52 < 48 :
+            if i%4 == cartes[positionVide1]%4 and i//4 == cartes[positionVide1]//4:
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
+                
+        if cartes[positionVide2]%52 < 48:
+            if i%4 == cartes[positionVide2]%4 and i//4 == cartes[positionVide2]//4:
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
+                
+        if cartes[positionVide3]%52 < 48:
+            if i%4 == cartes[positionVide3]%4 and i//4 == cartes[positionVide3]//4:
+                document.querySelector("#case" + str(i+4)).setAttribute("style", "background-color: lime")
     
     
     
