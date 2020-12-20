@@ -116,9 +116,7 @@ def afficherCartes(cartes):
     return table(string)
     
 
-def mettreEnVert(cartes):
-    global tabCartes
-    
+def mettreEnVert(cartes):    
     positionVide0 = cartes.index(0)-1
     positionVide1 = cartes.index(1)-1
     positionVide2 = cartes.index(2)-1
