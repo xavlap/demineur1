@@ -53,7 +53,7 @@ def melangerTab(tab):
     return tab
     
 #tableau qui represente l'ordre des cartes tout au long du programme
-ordreDesCartes=melangerTab(list(range(52)))
+ordreDesCartes = 0
  
 def init():
     main = document.querySelector("#main")
@@ -64,16 +64,18 @@ def init():
        #jeu table td { border: 0; padding: 1px 2px; height: auto; }
        #jeu table td img { height: auto; }
     ''' 
-    
-    main.innerHTML+= '<div id="jeu">'+afficherCartes()+'</div>'
+    global ordreDesCartes
+    ordreDesCartes = melangerTab(list(range(52)))
+    main.innerHTML+= '<div id="jeu">'+afficherCartes()+ '<button' \
+    ' onclick="init();">Nouvelle Partie</button>'\
+    '<br>Vous pouvez encore <button onclick="brasser();">Brasser les cartes'\
+    '</button> 3 fois</div>' 
     mettreEnVert()
     
 
 def clic(pos):
     global ordreDesCartes
-    print(ordreDesCartes[0])
-    ordreDesCartes[0] = ordreDesCartes[9]
-    print(ordreDesCartes[0])
+    
     pass
     
 #ajoute le td l'id et la fonction clic pour chaque cartes 
@@ -173,8 +175,9 @@ def mettreEnVert():
             i//4 == ordreDesCartes[positionVide3]//4:
                 document.querySelector("#case" + str(i+4)).setAttribute("style",
                 "background-color: lime")
-    
-    
+def brasser():
+    pass    
+
 
   
     
